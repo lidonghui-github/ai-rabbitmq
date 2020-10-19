@@ -1,24 +1,18 @@
 package helloword;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import org.junit.Test;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 消息生产者
+ * 消息消费者
  */
-public class FirstProvider {
-
-    //生产消息
-    @Test
-    public void testSendMQ() throws IOException, TimeoutException {
+public class FirstCustomer {
+    public static void main(String[] args) throws IOException, TimeoutException {
         //1.创建连接mq的连接对象工厂
         ConnectionFactory connectionFactory = new ConnectionFactory();
-       //2.设置连接mq主机
+        //2.设置连接mq主机
         connectionFactory.setHost("localhost");
         //3.设置端口号
         connectionFactory.setPort(5672);
@@ -40,25 +34,29 @@ public class FirstProvider {
          * 参数4：是否在消费完成后自动删除队列    true  自动删除    false 不自动删除
          * 参数5：额外参数
          */
-        channel.queueDeclare("hello",false,false,false,null);
+        channel.queueDeclare("hello", false, false, false, null);
 
-
-        //9.发布消息
+        //9.消费消息
         /**
-         * 参数1：交换机名称
-         * 参数2：队列名称
-         * 参数3：属性
-         * 参数4：消息内容
+         * 参数1：消费哪个队列的消息    队列名
+         * 参数2：开启消息的自动确认机制
+         * 参数3：消费时的回调接口
          */
-        channel.basicPublish("","hello",null,"hello rabbitmq2".getBytes());
+        channel.basicConsume("hello", true, new DefaultConsumer(channel) {
+            @Override
+            // body:从消息队列中取出的消息
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
+                System.out.println(new String(body));
 
+            }
 
-        //关闭通道
+        });
+
+     /*   //关闭通道
         channel.close();
         //关闭连接
         connection.close();
         //关闭工厂
-        connectionFactory.clone();
-
+        connectionFactory.clone();*/
     }
 }
