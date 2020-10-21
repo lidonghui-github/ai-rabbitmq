@@ -11,8 +11,13 @@ public class FirstProvider {
         Connection connection = RabbitMQUtils.getConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare("work",true,false,false,null);
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 100; i++) {
             channel.basicPublish("","work",null,(i+"work quene").getBytes());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         RabbitMQUtils.closeChannelAndConnection(channel,connection);
 
