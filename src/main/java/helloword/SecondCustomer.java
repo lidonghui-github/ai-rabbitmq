@@ -25,7 +25,7 @@ public class SecondCustomer {
          * 参数4：是否在消费完成后自动删除队列    true  自动删除    false 不自动删除
          * 参数5：额外参数
          */
-        channel.queueDeclare("hello", false, false, false, null);
+        channel.queueDeclare("hello3", true, false, true, null);
 
         //9.消费消息
         /**
@@ -33,7 +33,7 @@ public class SecondCustomer {
          * 参数2：开启消息的自动确认机制
          * 参数3：消费时的回调接口
          */
-        channel.basicConsume("hello", true, new DefaultConsumer(channel) {
+        channel.basicConsume("hello3", true, new DefaultConsumer(channel) {
             @Override
             // body:从消息队列中取出的消息
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {

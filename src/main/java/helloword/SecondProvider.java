@@ -4,6 +4,7 @@ import cn.hd.util.RabbitMQUtils;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.MessageProperties;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class SecondProvider {
          * 参数4：是否在消费完成后自动删除队列    true  自动删除    false 不自动删除
          * 参数5：额外参数
          */
-        channel.queueDeclare("hello", false, false, false, null);
+        channel.queueDeclare("hello3", true, false, true, null);
 
 
         //9.发布消息
@@ -39,8 +40,9 @@ public class SecondProvider {
          * 参数3：属性
          * 参数4：消息内容
          */
-        channel.basicPublish("", "hello", null, "哈哈".getBytes());
-
+        for(int k=0;k<1000;k++) {
+            channel.basicPublish("", "hello3", MessageProperties.PERSISTENT_TEXT_PLAIN, ("哈哈"+k).getBytes());
+        }
 
         //关闭通道
         RabbitMQUtils.closeChannelAndConnection(channel, connection);
