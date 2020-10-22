@@ -14,7 +14,7 @@ public class FirstProvider {
         for (int i = 0; i < 10000; i++) {
             channel.basicPublish("","work2",null,(i+"work2 quene").getBytes());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
