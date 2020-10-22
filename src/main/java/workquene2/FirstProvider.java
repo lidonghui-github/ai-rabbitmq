@@ -1,4 +1,4 @@
-package workquene;
+package workquene2;
 
 import cn.hd.util.RabbitMQUtils;
 import com.rabbitmq.client.Channel;
@@ -10,9 +10,9 @@ public class FirstProvider {
     public static void main(String[] args) throws IOException {
         Connection connection = RabbitMQUtils.getConnection();
         Channel channel = connection.createChannel();
-        channel.queueDeclare("work",true,false,false,null);
-        for (int i = 0; i < 10000000; i++) {
-            channel.basicPublish("","work",null,(i+"work quene").getBytes());
+        channel.queueDeclare("work2",true,false,false,null);
+        for (int i = 0; i < 10000; i++) {
+            channel.basicPublish("","work2",null,(i+"work2 quene").getBytes());
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
