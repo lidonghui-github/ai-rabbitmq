@@ -1,0 +1,15 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: rabbitmq-springboot
+  rabbitmq:
+    host: localhost
+    virtual-host: /ems
+    username: ldh
+    password: 123456
+    port: 5672
+debug: false
+logging:
+  level:
+    root: info
